@@ -2,7 +2,7 @@ from unittest import TestCase
 from copy import deepcopy
 from functools import reduce
 
-from plj.core import get_in, filter, conj, into
+from plj.core import get_in, filter, conj, into, first, last, nth
 
 class CoreTest(TestCase):
 
@@ -70,4 +70,20 @@ class CoreTest(TestCase):
         self.assertEqual([], lst)
 
         self.assertEqual([1, 2, 3, 4], list(reduce(conj, [3, 4], [1, 2])))
+
+    def test_first(self):
+        self.assertEqual(1, first([1, "B", 3, "D", 5]))
+        self.assertEqual(0, first((x for x in range(5))))
+        self.assertEqual(None, first((x for x in range(0))))
+
+    def test_last(self):
+        self.assertEqual(5, last([1, "B", 3, "D", 5]))
+        self.assertEqual(4, last((x for x in range(5))))
+        self.assertEqual(None, last((x for x in range(0))))
+
+    def test_nth(self):
+        self.assertEqual("B", nth([1, "B", 3, "D", 5], 1))
+        self.assertEqual(None, nth([1, "B", 3, "D", 5], 7))
+        self.assertEqual(3, nth((x for x in range(5)), 3))
+        self.assertEqual(None, nth((x for x in range(0)), 2))
 

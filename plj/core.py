@@ -42,3 +42,22 @@ def conj(l, i):
 def into(t, s):
     return (x for x in chain(iter(t), iter(s)))
 
+
+def last(i):
+    l = None
+    for x in iter(i):
+        l=x
+    return l
+
+
+def first(i):
+    for r in iter(i):
+        return r
+    return
+
+
+def nth(i, k):
+    for c, v in enumerate(i):
+        if c == k:
+            return v
+    return
