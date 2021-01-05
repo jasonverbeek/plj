@@ -1,7 +1,8 @@
 from unittest import TestCase
 from copy import deepcopy
+from functools import reduce
 
-from plj.core import get_in, filter
+from plj.core import get_in, filter, conj, into
 
 class CoreTest(TestCase):
 
@@ -56,4 +57,17 @@ class CoreTest(TestCase):
 
         self.assertEqual([2], list(filter(lambda x: x==2, data)))
 
+    def test_into(self):
+        lst = []
+        self.assertEqual([1, 2], list(into(lst, [1, 2])))
+        self.assertEqual([], lst)
+        self.assertEqual([2, 1, 1, 2], list(into([2, 1], [1, 2])))
+
+    def test_conj(self):
+        lst = []
+
+        self.assertEqual([1], list(conj(lst, 1)))
+        self.assertEqual([], lst)
+
+        self.assertEqual([1, 2, 3, 4], list(reduce(conj, [3, 4], [1, 2])))
 
