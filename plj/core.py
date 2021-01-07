@@ -28,39 +28,39 @@ def get_in(obj, *keys, default=None):
 
 
 @curry
-def filter(pred, col):
-    return (r for r in col if pred(r))
+def filter(pred, coll):
+    return (r for r in coll if pred(r))
 
 
 @curry
-def conj(l, i):
-    l.append(i)
-    return l
+def conj(coll, item):
+    coll.append(item)
+    return coll
 
 
 @curry
-def into(t, s):
-    t += s
-    return t
+def into(target, source):
+    target += source
+    return target
 
 
-def last(i):
-    l = None
-    for x in iter(i):
-        l=x
-    return l
+def last(coll):
+    result = None
+    for item in iter(coll):
+        result=item
+    return result
 
 
-def first(i):
-    for r in iter(i):
-        return r
+def first(coll):
+    for item in iter(coll):
+        return item
     return
 
 
 @curry
-def nth(i, k):
-    for c, v in enumerate(i):
-        if c == k:
-            return v
+def nth(coll, index):
+    for i, value in enumerate(coll):
+        if i == index:
+            return value
     return
 
