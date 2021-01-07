@@ -64,3 +64,11 @@ def nth(coll, index):
             return value
     return
 
+
+def distinct(coll):
+    seen = []
+    for item in iter(coll):
+        if item in seen:
+            continue
+        seen.append(item)
+    return seen

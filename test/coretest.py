@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from copy import deepcopy
 from functools import reduce
 
-from plj.core import get_in, filter, conj, into, first, last, nth, curry
+from plj.core import get_in, filter, conj, into, first, last, nth, curry, distinct
 
 class CoreTest(TestCase):
 
@@ -106,4 +106,19 @@ class CoreTest(TestCase):
             self.assertTrue(callable(fn2))
             fn3 = fn2(1)
             self.assertEqual(4, fn3)
+
+
+    def test_distinct(self):
+        self.assertEqual(
+            [1, 2, 3, "a"],
+            distinct([1, 1, 2, 3, "a", "a"]))
+        self.assertEqual(
+            {1, 2, 3, "a"},
+            set(distinct({1, 1, 2, 3, "a", "a"})))
+        self.assertEqual(
+            [1, 2, 3, "a"],
+            distinct((1, 1, 2, 3, "a", "a")))
+        self.assertEqual(
+            ["1", "2", "3", "a"],
+            distinct("1123aa"))
 
