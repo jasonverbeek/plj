@@ -1,8 +1,8 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from copy import deepcopy
 from functools import reduce
 
-from plj.core import get_in, filter, conj, into, first, last, nth
+from plj.core import get_in, filter, conj, into, first, last, nth, curry
 
 class CoreTest(TestCase):
 
@@ -39,7 +39,7 @@ class CoreTest(TestCase):
         self.assertEqual(None, get_in(data, "d", "da", "daa"))
         self.assertEqual(42, get_in(data, "d", "da", "daa", default=42))
 
-        self.assertEqual(42, get_in(data, "c", "cb", "cba", default=42))
+        self.assertEqual(None, get_in(data, "c", "cb", "cba", default=42))
 
         self.assertEqual(original, data)
 
@@ -59,15 +59,15 @@ class CoreTest(TestCase):
 
     def test_into(self):
         lst = []
-        self.assertEqual([1, 2], list(into(lst, [1, 2])))
-        self.assertEqual([], lst)
-        self.assertEqual([2, 1, 1, 2], list(into([2, 1], [1, 2])))
+        self.assertEqual([1, 2], into(lst, [1, 2]))
+        self.assertEqual([1, 2], lst)
+        self.assertEqual([2, 1, 1, 2], into([2, 1], [1, 2]))
 
     def test_conj(self):
         lst = []
 
-        self.assertEqual([1], list(conj(lst, 1)))
-        self.assertEqual([], lst)
+        self.assertEqual([1], conj(lst, 1))
+        self.assertEqual([1], lst)
 
         self.assertEqual([1, 2, 3, 4], list(reduce(conj, [3, 4], [1, 2])))
 
@@ -86,4 +86,24 @@ class CoreTest(TestCase):
         self.assertEqual(None, nth([1, "B", 3, "D", 5], 7))
         self.assertEqual(3, nth((x for x in range(5)), 3))
         self.assertEqual(None, nth((x for x in range(0)), 2))
+
+    def test_curry(self):
+        @curry(4)
+        def curry_a(a, b, c, d):
+            return a+b+c+d
+
+        @curry
+        def curry_b(a, b, c, d):
+            return a+b+c+d
+
+        for fn in [curry_a, curry_b]:
+            self.assertTrue(callable(fn))
+            fn0 = fn(1)
+            self.assertTrue(callable(fn0))
+            fn1 = fn0(1)
+            self.assertTrue(callable(fn1))
+            fn2 = fn1(1)
+            self.assertTrue(callable(fn2))
+            fn3 = fn2(1)
+            self.assertEqual(4, fn3)
 
